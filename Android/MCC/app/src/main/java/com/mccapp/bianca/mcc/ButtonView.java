@@ -6,13 +6,9 @@ import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,7 +19,7 @@ import java.io.OutputStream;
 import java.util.Set;
 import java.util.UUID;
 
-public class HomeScreen extends AppCompatActivity {
+public class ButtonView extends AppCompatActivity {
 
     TextView myLabel;
     BluetoothAdapter mBluetoothAdapter;
@@ -35,15 +31,17 @@ public class HomeScreen extends AppCompatActivity {
     byte[] readBuffer;
     int readBufferPosition;
     volatile boolean stopWorker;
+   // MediaPlayer honk = MediaPlayer.create(getApplicationContext(), R.raw.startaudio );
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
+        //honk.start();
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home_screen);
+        setContentView(R.layout.activity_button_view);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        //honk.stop();
 
         //button declaration
         Button upButton = (Button) this.findViewById(R.id.up);
@@ -53,7 +51,7 @@ public class HomeScreen extends AppCompatActivity {
         Button downButton = (Button) this.findViewById(R.id.down);
         Button stopButton = (Button) this.findViewById(R.id.stop);
 
-       // Button upButton = (Button) this.findViewById(R.id.up);
+        // Button upButton = (Button) this.findViewById(R.id.up);
         bluetoothButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,7 +67,7 @@ public class HomeScreen extends AppCompatActivity {
         upButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              Forward();
+                Forward();
             }
         });
 
@@ -113,11 +111,11 @@ public class HomeScreen extends AppCompatActivity {
 
     void Backward()
     {
-      try {
-          mmOutputStream.write("b".getBytes());
-      }  catch (IOException e) {
-          e.printStackTrace();
-      }
+        try {
+            mmOutputStream.write("b".getBytes());
+        }  catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     void Right(){
@@ -147,32 +145,32 @@ public class HomeScreen extends AppCompatActivity {
     }
     void findBT()
     {
-mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-    if(mBluetoothAdapter == null)
-    {
-        //myLabel.setText("No bluetooth adapter available");
-    }
-
-    if(!mBluetoothAdapter.isEnabled())
-    {
-        Intent enableBluetooth = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-        startActivityForResult(enableBluetooth, 0);
-    }
-
-    Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
-    if(pairedDevices.size() > 0)
-    {
-        for(BluetoothDevice device : pairedDevices)
+        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        if(mBluetoothAdapter == null)
         {
-            if(device.getName().equals("HC-06"))
+            //myLabel.setText("No bluetooth adapter available");
+        }
+
+        if(!mBluetoothAdapter.isEnabled())
+        {
+            Intent enableBluetooth = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(enableBluetooth, 0);
+        }
+
+        Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
+        if(pairedDevices.size() > 0)
+        {
+            for(BluetoothDevice device : pairedDevices)
             {
-                mmDevice = device;
-                break;
+                if(device.getName().equals("HC-06"))
+                {
+                    mmDevice = device;
+                    break;
+                }
             }
         }
+        // myLabel.setText("Bluetooth Device Found");
     }
-    // myLabel.setText("Bluetooth Device Found");
-}
 
     void openBT() throws IOException
     {
@@ -253,6 +251,3 @@ mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         Toast.makeText(getApplicationContext(),"Turned off" ,Toast.LENGTH_LONG).show();        }
 
 }
-
-
-
