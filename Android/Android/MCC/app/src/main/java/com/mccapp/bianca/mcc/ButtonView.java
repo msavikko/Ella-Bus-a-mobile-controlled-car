@@ -99,6 +99,7 @@ public class ButtonView extends AppCompatActivity {
             }
         });
     }
+// Commands to move the car
 
     void Forward()
     {
@@ -181,7 +182,7 @@ public class ButtonView extends AppCompatActivity {
         mmInputStream = mmSocket.getInputStream();
 
         beginListenForData();
-        Toast.makeText(getApplicationContext(),"Bluetooth connected!" ,Toast.LENGTH_LONG).show();;
+        Toast.makeText(getApplicationContext(),"Bluetooth connected!" ,Toast.LENGTH_LONG).show();
     }
 
     void beginListenForData()
