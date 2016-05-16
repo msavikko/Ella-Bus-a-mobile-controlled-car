@@ -14,17 +14,6 @@
         android:layout_centerHorizontal="true"
         android:id="@+id/linearLayout">
 
-        <Button
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Control by buttons"
-            android:id="@+id/btnButton"
-            android:layout_gravity="center_horizontal"
-            android:backgroundTintMode="src_in"
-            android:backgroundTint="@android:color/holo_green_light"
-            android:textColor="@color/abc_primary_text_disable_only_material_light" />
-
     </LinearLayout>
 
     <Button
@@ -55,7 +44,19 @@
         android:layout_gravity="center_horizontal"
         android:textColor="@color/abc_primary_text_disable_only_material_light"
         android:background="@android:color/holo_green_light"
-        android:layout_marginTop="43dp"
-        android:layout_below="@+id/linearLayout"
-        android:layout_alignEnd="@+id/linearLayout" />
+        android:layout_below="@+id/btnButton"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Control by buttons"
+        android:id="@+id/btnButton"
+        android:layout_gravity="center_horizontal"
+        android:backgroundTintMode="src_in"
+        android:backgroundTint="@android:color/holo_green_light"
+        android:textColor="@color/abc_primary_text_disable_only_material_light"
+        android:layout_centerVertical="true"
+        android:layout_alignStart="@+id/btnJoystick" />
 </RelativeLayout>
