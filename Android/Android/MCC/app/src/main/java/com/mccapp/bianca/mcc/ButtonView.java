@@ -98,9 +98,10 @@ public class ButtonView extends AppCompatActivity {
                 Stop();
             }
         });
+
+
     }
 // Commands to move the car.
-
     void Forward()
     {
         try {
