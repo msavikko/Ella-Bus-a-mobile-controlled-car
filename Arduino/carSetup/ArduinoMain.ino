@@ -29,18 +29,23 @@ Odometer encoderLeft, encoderRight;
 Gyroscope gyro;
 
 //declaring the initial speeds and movements of the car
-int actualSpeed; //70% of the full speed forward
+int frontSpeed = 60; //70% of the full speed forward
+int backSpeed = -60; //70% of the full speed backward
+int lDegrees = -75; //degrees to turn left
+int rDegrees = 75; //degrees to turn right
 char side = 'n';
+int actualSpeed = frontSpeed;
 
-//integers used to calculate the distance for the 2 ultrasonic sensors
-int distanceFront;
-int distanceBack;
 
-//declare the LEDs
+  //declare the LEDs
 const int pinFrontLeft = A1;
 const int pinFrontRight = A9;
 const int pinBackRight= A8;
 const int pinBackLeft = A7;
+
+//integers used to calculate the distance for the 2 ultrasonic sensors
+int distanceFront;
+int distanceBack;
 
 void setup() {
   //begin the bluetooth 
@@ -66,118 +71,138 @@ void setup() {
 
   //initialise buzzer;
   pinMode(buzzer, OUTPUT);
-
-  //initialise the LEDs
-  pinMode(pinFrontRight, OUTPUT);
-  pinMode(pinFrontLeft, OUTPUT);
-  pinMode(pinBackRight, OUTPUT);
   pinMode(pinBackLeft, OUTPUT);
+  pinMode(pinBackRight, OUTPUT);
+  pinMode(pinFrontLeft, OUTPUT);
+  pinMode(pinFrontRight, OUTPUT);
+
 }
 
 void loop() {
- tempSens.requestTemperatures();
- //Serial.println(tempSens.getTempCByIndex(0));                                         //VALUE MUST GO TO ANDROID
- 
+
  distanceFront = ultrasonicSensorFront.getDistance();
  distanceBack = ultrasonicSensorBack.getDistance();
-
- actualSpeed = car.getSpeed();                                                         //VALUE MUST GO TO ANDROID
  handleInput();
  
-  if (actualSpeed == 0){
+ int speed2 = car.getSpeed();                                       //VALUE MUST GO TO ANDROID
+  if (speed2 == 0){
   side = 'n';
   }
- 
- if ( IsClear(distanceFront) == false && side != 'n' && side != 'b'){  
+ //Serial.print(speed2);
+ if ( IsClear(distanceFront) == false  && side !='b' && side != 'n'){  
    if (distanceFront > 20 && distanceFront == 0){
-     car.setSpeed(actualSpeed);      
+     car.setSpeed(frontSpeed);      
    }
    else{
-    if (actualSpeed != 0){
+    if (speed2 != 0){
      digitalWrite(buzzer, HIGH);
-     car.setSpeed(0);
      delay(300);
+     car.setSpeed(0);
      digitalWrite(buzzer, LOW);
      delay(100);
      digitalWrite(buzzer, HIGH);
      delay(300);
      digitalWrite(buzzer, LOW);
    }
-   else {
-    car.setSpeed(0);
    }
-   }
+
+
  }
 
- actualSpeed = car.getSpeed();                                                         //VALUE MUST GO TO ANDROID
+ speed2 = car.getSpeed();                                        //VALUE MUST GO TO ANDROID
  if ( IsClear(distanceBack) == false && side =='b'){
    if (distanceBack > 20 && distanceBack == 0){
-     car.setSpeed(actualSpeed);
+     car.setSpeed(backSpeed);
     }
     else{     
-      if (actualSpeed != 0){
-       digitalWrite(buzzer, HIGH);
-       delay(300);
-       car.setSpeed(0);
-       digitalWrite(buzzer, LOW);
-       delay(100);
-       digitalWrite(buzzer, HIGH);
-       delay(300);
-       digitalWrite(buzzer, LOW);
-     } 
-     else{
-      car.setSpeed(0); 
-     }
-   }
+      if (speed2 != 0){
+      digitalWrite(buzzer, HIGH);
+      delay(300);
+      car.setSpeed(0);
+      digitalWrite(buzzer, LOW);
+      delay(100);
+      digitalWrite(buzzer, HIGH);
+      delay(300);
+      digitalWrite(buzzer, LOW);
+    }
+    else{
+      car.setSpeed(0); }
+    }
   }   
+   //tempSens.requestTemperatures();                                                    
+ //Serial3.println(tempSens.getTempCByIndex(0));                                         //VALUE MUST GO TO ANDROID
+ 
+
 }
 
 void handleInput() { //handle serial input if there is any
 
-  if (Serial.available()) {
-    String empty = Serial.readStringUntil('P');
-
-    String sPower = Serial.readStringUntil('A');
-    int power = sPower.toInt();
-    actualSpeed = power;
-    car.setSpeed(power);
-
-    String sAngle = Serial.readStringUntil('D');
-    int angle = sAngle.toInt();
-    car.setAngle(angle);
-    
-    //checks which ultrasonic should be triggered
-    if (power < 0){
-      side = 'b';
-      }
-    else side = 'f';   
-
-
-    digitalWrite(pinBackRight, LOW);
-    digitalWrite(pinBackLeft, LOW);
-    digitalWrite(pinFrontLeft, LOW);
-    digitalWrite(pinFrontRight, LOW);
-    
-    int speed = car.getSpeed();
-    if (speed != 0){  
-      if ( angle >= 0){
-        digitalWrite(pinFrontRight, HIGH);
-        digitalWrite(pinFrontLeft, LOW);
-        digitalWrite(pinBackRight, HIGH);
+  if (Serial3.available()) {    
+    char input = Serial3.read(); //read everything that has been received so far and log down the last entry
+        digitalWrite(pinBackRight, LOW);
         digitalWrite(pinBackLeft, LOW);
-      }
-      if ( angle < 0){
+        digitalWrite(pinFrontLeft, LOW);
+        digitalWrite(pinFrontRight, LOW);
+    switch (input) {     
+      case 'l': //rotate counter-clockwise going forward
+        car.setSpeed(actualSpeed);
+        car.setAngle(lDegrees);       
+        side = 'l';
         digitalWrite(pinBackRight, LOW);
         digitalWrite(pinBackLeft, HIGH);
-        digitalWrite(pinFrontRight, LOW);
         digitalWrite(pinFrontLeft, HIGH);
-      }
-    }
-   }
- }
+        digitalWrite(pinFrontRight, LOW);
+        break;
+      case 'r': //turn clock-wise
+         car.setSpeed(actualSpeed);
+         car.setAngle(rDegrees);
+         side = 'r';
+        digitalWrite(pinBackRight, HIGH);
+        digitalWrite(pinBackLeft, LOW);
+        digitalWrite(pinFrontLeft, LOW);
+        digitalWrite(pinFrontRight, HIGH);
+         break;
+      case 'f': //go ahead
+        side = 'f';
+        car.setAngle(0); 
+        actualSpeed = frontSpeed;
+        car.setSpeed(frontSpeed);
+        break;
+      case 'b': //go back
+        side = 'b';
+        actualSpeed = backSpeed;
+        car.setSpeed(backSpeed);
+        car.setAngle(0);
+        break;
+      case 's': 
+        car.setSpeed(0);
+        car.setAngle(0);
+        break;
+      case 't':
+        car.setSpeed(backSpeed);
+        actualSpeed = backSpeed;
+        car.setAngle(rDegrees);
+        break;
+      case 'w':
+        car.setSpeed(backSpeed);
+        actualSpeed = backSpeed;
+        car.setAngle(lDegrees);  
+        break;
+      case 'h':
+        car.setSpeed(frontSpeed);
+        car.setAngle(lDegrees);
+        break;
+      case 'i':
+        car.setSpeed(frontSpeed);
+        car.setAngle(rDegrees);
+        break;
+        }
+  }
+}
 
   boolean IsClear(int distance){
       if (distance > 20){
+       //Serial.print(distance); 
        return true;
       }
       if (distance == 0){
