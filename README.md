@@ -5,8 +5,8 @@ This project has been developed under the tutalage of the "System Development" c
 It is a smartCar controlled by a mobile application. Components:
 
 # 1. The SmartCar
--A smartCar controlled through DC motor, and several Arduino boards.
--The Arduino boards are in charge of the steering of the car, and "plate number" display.
+- A smartCar controlled through DC motor, and several Arduino boards.
+- The Arduino boards are in charge of the steering of the car, and "plate number" display.
 -The car implemenents a form of a warning if any object is found in front of it.
 -The car implemenets a camera which the user can use in order to see on the EllaBuss application the surroundings of the car.
 -The car implements a form of steering control in the case in which the camera is about to collide (back and front rear).
