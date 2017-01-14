@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+ <RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:showIn="@layout/activity_button_view"
+    tools:context=".ButtonView">
+
+    <TextView
+        android:text="MCC"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:enabled="false"
+        android:textStyle="bold"
+        android:textColor="#050505"
+        android:visibility="visible"
+        android:textAlignment="center"
+        android:textSize="@dimen/abc_action_button_min_width_material"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/titleView" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/UnderTitle"
+        android:layout_below="@+id/titleView"
+        android:layout_centerHorizontal="true"
+        android:text="The Magic School Bus"
+        android:textColor="#060606"
+        android:textStyle="italic" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:id="@+id/left"
+        android:layout_width="50dp"
+        android:layout_height="60dp"
+        android:background="@drawable/leftarrow"
+        android:layout_alignTop="@+id/stop"
+        android:layout_toStartOf="@+id/UnderTitle" />
+
+    <Button
+        android:layout_width="50dp"
+        android:layout_height="60dp"
+        android:background="@drawable/pause"
+        android:id="@+id/stop"
+        android:layout_below="@+id/up"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="55dp" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:id="@+id/right"
+        android:background="@drawable/rightarrow"
+        android:layout_width="50dp"
+        android:layout_height="60dp"
+        android:layout_alignTop="@+id/stop"
+        android:layout_toEndOf="@+id/UnderTitle" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:background="@drawable/downarrow"
+        android:layout_width="50dp"
+        android:layout_height="60dp"
+        android:id="@+id/down"
+        android:layout_below="@+id/stop"
+        android:layout_alignStart="@+id/stop"
+        android:layout_marginTop="51dp" />
+
+    <Button
+        android:id="@+id/up"
+        android:background="@drawable/uparrow"
+        android:layout_width="50dp"
+        android:layout_height="60dp"
+        android:layout_below="@+id/UnderTitle"
+        android:layout_alignStart="@+id/stop" />
+
+    <Button
+        android:id="@+id/bluetoothBtn"
+        android:background="@drawable/bluetooth"
+        android:layout_width="70dp"
+        android:layout_height="60dp"
+        android:layout_below="@+id/down"
+        android:layout_alignStart="@+id/titleView" />
+
+   <TextView
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:id="@+id/mylabel"
+       android:layout_below="@+id/bluetoothBtn"
+       android:layout_centerHorizontal="true" />
+
+
+
+</RelativeLayout>
